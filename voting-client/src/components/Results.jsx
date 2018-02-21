@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Winner from './Winner';
+import * as actionCreators from '../action_creators';
 
 class Results extends React.PureComponent {
   getPair() {
@@ -50,7 +51,7 @@ function mapStateToProps(state) {
   }
 }
 
-const ResultsContainer = connect(mapStateToProps)(Results);
+const ResultsContainer = connect(mapStateToProps, actionCreators)(Results);
 
 export {
   Results,
