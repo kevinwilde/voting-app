@@ -134,6 +134,24 @@ describe('application logic', () => {
             }));
         });
 
+        it('only allows an entry to be voted if it is included in the current pair', () => {
+            const state = Map({
+                pair: List.of('Trainspotting', '28 Days Later'),
+                tally: Map({
+                    'Trainspotting': 3,
+                    '28 Days Later': 2
+                })
+            });
+            const nextState = vote(state, 'Sunshine');
+            expect(nextState).to.equal(Map({
+                pair: List.of('Trainspotting', '28 Days Later'),
+                tally: Map({
+                    'Trainspotting': 3,
+                    '28 Days Later': 2
+                })
+            }));
+        });
+
     });
 
 });
