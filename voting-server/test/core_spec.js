@@ -114,12 +114,15 @@ describe('application logic', () => {
                 round: 1,
                 pair: List.of('Trainspotting', '28 Days Later')
             });
-            const nextState = vote(state, 'Trainspotting');
+            const nextState = vote(state, 'Trainspotting', 'voter1');
             expect(nextState).to.equal(Map({
                 round: 1,
                 pair: List.of('Trainspotting', '28 Days Later'),
                 tally: Map({
                     'Trainspotting': 1
+                }),
+                votes: Map({
+                    voter1: 'Trainspotting'
                 })
             }));
         });
@@ -133,13 +136,16 @@ describe('application logic', () => {
                     '28 Days Later': 2
                 })
             });
-            const nextState = vote(state, 'Trainspotting');
+            const nextState = vote(state, 'Trainspotting', 'voter1');
             expect(nextState).to.equal(Map({
                 round: 1,
                 pair: List.of('Trainspotting', '28 Days Later'),
                 tally: Map({
                     'Trainspotting': 4,
                     '28 Days Later': 2
+                }),
+                votes: Map({
+                    voter1: 'Trainspotting'
                 })
             }));
         });
@@ -153,7 +159,7 @@ describe('application logic', () => {
                     '28 Days Later': 2
                 })
             });
-            const nextState = vote(state, 'Sunshine');
+            const nextState = vote(state, 'Sunshine', 'voter1');
             expect(nextState).to.equal(Map({
                 round: 1,
                 pair: List.of('Trainspotting', '28 Days Later'),
@@ -162,6 +168,34 @@ describe('application logic', () => {
                     '28 Days Later': 2
                 })
             }));
+        });
+
+        it('nullifies previous vote for the same voter', () => {
+            expect(
+                vote(Map({
+                    round: 1,
+                    pair: List.of('Trainspotting', '28 Days Later'),
+                    tally: Map({
+                        'Trainspotting': 3,
+                        '28 Days Later': 2
+                    }),
+                    votes: Map({
+                        voter1: '28 Days Later'
+                    })
+                }), 'Trainspotting', 'voter1')
+            ).to.equal(
+                Map({
+                    round: 1,
+                    pair: List.of('Trainspotting', '28 Days Later'),
+                    tally: Map({
+                        'Trainspotting': 4,
+                        '28 Days Later': 1
+                    }),
+                    votes: Map({
+                        voter1: 'Trainspotting'
+                    })
+                })
+            );
         });
 
     });
